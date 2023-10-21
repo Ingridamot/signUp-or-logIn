@@ -1,5 +1,8 @@
 package com.motuziene;
+import org.apache.commons.codec.digest.DigestUtils;
+
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -7,41 +10,66 @@ import java.util.Scanner;
  *
  */
 public class App {
-
-    public static final Scanner SCANNER = new Scanner(System.in);
     public static final HashMap<String, String> VARTOTOJO_SAUGYKLA = new HashMap<String, String>();
-    public static Programa programa = new Programa(SCANNER.nextLine(),SCANNER.nextLine());
+    public static Scanner scanner = new Scanner(System.in);
 
     public static void main( String[] args ) {
+
         while (true) {
             System.out.println("pasirinkite ką norite atlikti");
             System.out.println("[1] - jei norite registruotis");
             System.out.println("[2] - jei norite prisijungti");
-            int pasirinkimas = SCANNER.nextInt();
-            SCANNER.nextLine();
+            int pasirinkimas = scanner.nextInt();
             switch (pasirinkimas) {
                 case 1 -> vartotojoRegistracija();
-                case 2 -> {}
-                default -> {
-                    System.out.println("neteisingas pasirinkimas, bandykite dar kartą");
-                }
+                case 2 -> vartotojoPrisijungimas();
+                default -> System.out.println("neteisingas pasirinkimas, bandykite dar kartą");
             }
         }
     }
 
+    private static void vartotojoPrisijungimas() {
+        System.out.println("Įveskite vartotojo vardą");
+        String userName = scanner.next();
+        System.out.println("Įveskite slaptažodį");
+        String userPass = scanner.next();
+        String uzkoduotasuserPass = uzkoduotiSlaptazodi(userPass);
+        boolean found = false;
+
+        for (Map.Entry<String, String> entry : VARTOTOJO_SAUGYKLA.entrySet()) {
+            String storedUserName = entry.getKey();
+            String storedUserPass = entry.getValue();
+
+
+            if (userName.equals(storedUserName) && uzkoduotasuserPass.equals(storedUserPass)) {
+                found = true;
+                System.out.println("Sėkmingai prisijungėte!");
+                break;
+            }
+        }
+        if (!found) {
+            System.out.println("Neteisingas vartotojo vardas arba slaptažodis");
+        }
+    }
+
+
     private static void vartotojoRegistracija() {
         System.out.println("Iveskite vartotojo vardą");
-        String userName = SCANNER.nextLine();
+        String userName = scanner.nextLine();
         System.out.println("Iveskite pasirinktą slaptažodį");
-        String userPass = SCANNER.nextLine();
+        String userPass = scanner.nextLine();
         System.out.println("pakartokite ivesta slaptazodi");
-        String userPass2 = SCANNER.nextLine();
+        String userPass2 = scanner.nextLine();
 
         if (userPass.equals(userPass2)) {
-            String uzkoduotasPass = programa.uzkoduotiSlaptazodi(userPass);
+            String uzkoduotasPass = uzkoduotiSlaptazodi(userPass);
             VARTOTOJO_SAUGYKLA.put(userName,uzkoduotasPass);
         } else {
             System.out.println("slaptazodziai nesutampa, bandykite dar karta");
         }
+    }
+
+    public static String uzkoduotiSlaptazodi (String userPass){
+        return DigestUtils.sha256Hex(userPass);
     }
 }
