@@ -1,4 +1,5 @@
 package com.motuziene;
+
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.util.HashMap;
@@ -7,13 +8,12 @@ import java.util.Scanner;
 
 /**
  * Hello world!
- *
  */
 public class App {
-    public static final HashMap <String, String> VARTOTOJO_SAUGYKLA = new HashMap<>();
+    public static final HashMap<String, String> VARTOTOJO_SAUGYKLA = new HashMap<>();
     public static Scanner scanner = new Scanner(System.in);
 
-    public static void main( String[] args ) {
+    public static void main(String[] args) {
 
         boolean noriuAtliktiVeiksmus = true;
 
@@ -26,7 +26,7 @@ public class App {
             switch (pasirinkimas) {
                 case 1 -> vartotojoRegistracija();
                 case 2 -> vartotojoPrisijungimas();
-                case 0 -> noriuAtliktiVeiksmus =false;
+                case 0 -> noriuAtliktiVeiksmus = false;
                 default -> System.out.println("neteisingas pasirinkimas, bandykite dar kartą");
             }
         }
@@ -44,7 +44,6 @@ public class App {
             String storedUserName = entry.getKey();
             String storedUserPass = entry.getValue();
 
-
             if (userName.equals(storedUserName) && uzkoduotasuserPass.equals(storedUserPass)) {
                 found = true;
                 System.out.println("Sėkmingai prisijungėte!");
@@ -56,7 +55,6 @@ public class App {
         }
     }
 
-
     private static void vartotojoRegistracija() {
         System.out.println("Iveskite vartotojo vardą");
         String userName = scanner.next();
@@ -67,13 +65,13 @@ public class App {
 
         if (userPass.equals(userPass2)) {
             String uzkoduotasPass = uzkoduotiSlaptazodi(userPass);
-            VARTOTOJO_SAUGYKLA.put(userName,uzkoduotasPass);
+            VARTOTOJO_SAUGYKLA.put(userName, uzkoduotasPass);
         } else {
             System.out.println("slaptazodziai nesutampa, bandykite dar karta");
         }
     }
 
-    public static String uzkoduotiSlaptazodi (String userPass){
+    public static String uzkoduotiSlaptazodi(String userPass) {
         return DigestUtils.sha256Hex(userPass);
     }
 }
