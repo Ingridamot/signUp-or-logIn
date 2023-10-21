@@ -10,19 +10,23 @@ import java.util.Scanner;
  *
  */
 public class App {
-    public static final HashMap<String, String> VARTOTOJO_SAUGYKLA = new HashMap<String, String>();
+    public static final HashMap <String, String> VARTOTOJO_SAUGYKLA = new HashMap<>();
     public static Scanner scanner = new Scanner(System.in);
 
     public static void main( String[] args ) {
 
-        while (true) {
+        boolean noriuAtliktiVeiksmus = true;
+
+        while (noriuAtliktiVeiksmus) {
             System.out.println("pasirinkite ką norite atlikti");
             System.out.println("[1] - jei norite registruotis");
             System.out.println("[2] - jei norite prisijungti");
+            System.out.println("[0] - jei norite uzdaryti programa");
             int pasirinkimas = scanner.nextInt();
             switch (pasirinkimas) {
                 case 1 -> vartotojoRegistracija();
                 case 2 -> vartotojoPrisijungimas();
+                case 0 -> noriuAtliktiVeiksmus =false;
                 default -> System.out.println("neteisingas pasirinkimas, bandykite dar kartą");
             }
         }
@@ -55,11 +59,11 @@ public class App {
 
     private static void vartotojoRegistracija() {
         System.out.println("Iveskite vartotojo vardą");
-        String userName = scanner.nextLine();
+        String userName = scanner.next();
         System.out.println("Iveskite pasirinktą slaptažodį");
-        String userPass = scanner.nextLine();
+        String userPass = scanner.next();
         System.out.println("pakartokite ivesta slaptazodi");
-        String userPass2 = scanner.nextLine();
+        String userPass2 = scanner.next();
 
         if (userPass.equals(userPass2)) {
             String uzkoduotasPass = uzkoduotiSlaptazodi(userPass);
